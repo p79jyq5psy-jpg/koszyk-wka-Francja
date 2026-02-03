@@ -3,127 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BasketFrance Hub - Pełna Wersja</title>
+    <title>BasketFrance Hub - Full Experience</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        .hero-text { line-height: 0.8; letter-spacing: -0.05em; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+    </script>
 </head>
-<body class="bg-slate-50 font-sans">
+<body class="bg-slate-100 text-slate-900">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
-        // --- TWOJE KOMPONENTY (FULL WERSJA) ---
-        const Header = ({ onNavigate, activeTab }) => (
-          <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b-4 border-blue-900">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between h-20 items-center">
-                <button onClick={() => onNavigate('news')} className="flex items-center space-x-3 group">
-                  <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center text-white font-bold text-2xl group-hover:bg-red-600 transition-colors">F</div>
-                  <span className="text-2xl font-extrabold tracking-tighter text-blue-900 uppercase">Basket<span className="text-red-600">France</span> Hub</span>
-                </button>
-                <nav className="hidden md:flex items-center space-x-4">
-                  {['standings', 'prob', 'lesbleus', 'sklep'].map((tab) => (
-                    <button key={tab} onClick={() => onNavigate(tab)}
-                      className={`text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg transition-all ${
-                        activeTab === tab ? 'bg-blue-900 text-white shadow-md' : 'text-slate-500 hover:text-blue-900'
-                      } ${tab === 'sklep' ? 'bg-red-600 text-white hover:bg-red-700' : ''}`}
-                    >
-                      {tab === 'standings' ? 'Betclic Élite' : tab === 'prob' ? 'Pro B' : tab === 'lesbleus' ? 'Les Bleus' : 'Sklep'}
-                    </button>
-                  ))}
-                </nav>
-              </div>
-            </div>
-          </header>
-        );
+        // --- DANE ---
+        const PLAYERS = [
+            { id: 1, name: "Victor Wembanyama", team: "San Antonio Spurs", stats: "21.4 PPG | 10.6 RPG | 3.6 BPG", desc: "Absolutny fenomen. Pierwszy wybór draftu 2023, który redefiniuje pojęcie obrony i ataku swoim zasięgiem i mobilnością.", role: "Generational Talent" },
+            { id: 2, name: "Zaccharie Risacher", team: "Atlanta Hawks", stats: "NBA Draft 2024 #1 Pick", desc: "Niezwykle inteligentny skrzydłowy z elitarnym rzutem z dystansu. Przyszłość Hawks i reprezentacji.", role: "Rising Star" },
+            { id: 3, name: "Rudy Gobert", team: "Minnesota Timberwolves", stats: "4x Defensive Player of the Year", desc: "Najlepszy obrońca swojej generacji. Filar 'Les Bleus', który pilnuje pomalowanego jak nikt inny.", role: "The Anchor" },
+            { id: 4, name: "Alex Sarr", team: "Washington Wizards", stats: "NBA Draft 2024 #2 Pick", desc: "Nowoczesny podkoszowy, którego mobilność w obronie pozwala na krycie wszystkich pozycji.", role: "The Future" }
+        ];
 
-        const NewsSection = () => (
-          <div className="py-12 px-4 max-w-7xl mx-auto">
-            <div className="flex justify-between items-end mb-10">
-              <div>
-                <p className="text-red-600 font-black uppercase text-xs tracking-widest mb-1">Stay updated</p>
-                <h2 className="text-4xl font-black text-slate-800 uppercase italic tracking-tighter">Najnowsze <span className="text-blue-900">Raporty</span></h2>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {[
-                { id: '1', title: "Draft 2024: Historyczny Dublet", excerpt: "Risacher i Sarr zajmują dwa pierwsze miejsca w drafcie NBA. To absolutny rekord dla europejskiej koszykówki.", category: 'Draft', img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=800' },
-                { id: '2', title: "Wembanyama: Defensywny Fenomen", excerpt: "Victor prowadzi w klasyfikacji bloków NBA i redefiniuje pojęcie obrony obręczy.", category: 'NBA', img: 'https://images.unsplash.com/photo-1519861531473-9200362f88bf?q=80&w=800' }
-              ].map(item => (
-                <div key={item.id} className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100">
-                  <div className="h-72 overflow-hidden relative">
-                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.title} />
-                    <div className="absolute top-6 left-6 bg-white/95 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-blue-900 shadow-sm">{item.category}</div>
-                  </div>
-                  <div className="p-10">
-                    <h3 className="text-2xl font-black mb-4 group-hover:text-blue-900 transition-colors leading-tight uppercase italic">{item.title}</h3>
-                    <p className="text-slate-500 text-sm mb-8 leading-relaxed">{item.excerpt}</p>
-                    <button className="text-xs font-black uppercase tracking-widest text-red-600 hover:text-red-700 flex items-center gap-2">
-                      Czytaj raport <span className="text-lg">→</span>
-                    </button>
-                  </div>
+        const NEWS = [
+            { title: "Draft 2024: Historyczny Dublet", date: "Czerwiec 2024", excerpt: "Francja staje się potęgą. Risacher i Sarr zajmują dwa pierwsze miejsca w drafcie NBA. To pierwszy taki przypadek w historii dla kraju spoza USA.", cat: "HISTORIA" },
+            { title: "Wembanyama: Defensywny Fenomen", date: "Styczeń 2026", excerpt: "Victor prowadzi w klasyfikacji bloków i jest głównym faworytem do nagrody DPOY. Jego wpływ na grę Spurs jest kolosalny.", cat: "NBA" },
+            { title: "AS Monaco: Dominacja w Pro A", date: "Luty 2026", excerpt: "Klub z Księstwa kontynuuje swoją passę zwycięstw, budując najsilniejszą kadrę w historii ligi francuskiej.", cat: "PRO A" },
+            { title: "Nowa Fala w Charlotte", date: "Styczeń 2026", excerpt: "Francuscy zawodnicy coraz mocniej zaznaczają swoją obecność w Hornets. Tidjane Salaün pokazuje pazur.", cat: "NBA" },
+            { title: "LNB to nie tylko NBA", date: "Luty 2026", excerpt: "Liga francuska staje się najlepszym miejscem do rozwoju dla młodych talentów z całego świata.", cat: "ANALIZA" }
+        ];
+
+        // --- KOMPONENTY ---
+
+        const Navigation = ({ active, setTab }) => (
+            <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b-4 border-blue-900 shadow-xl">
+                <div className="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+                    <div onClick={() => setTab('news')} className="flex items-center space-x-3 cursor-pointer group">
+                        <div className="w-12 h-12 bg-blue-900 rounded-2xl flex items-center justify-center text-white font-black text-2xl group-hover:rotate-12 transition-transform">F</div>
+                        <span className="text-2xl font-black text-blue-900 uppercase italic">Basket<span className="text-red-600">France</span> Hub</span>
+                    </div>
+                    <nav className="hidden xl:flex items-center space-x-2">
+                        {[
+                            {id: 'standings', label: 'Betclic Élite'},
+                            {id: 'prob', label: 'Pro B'},
+                            {id: 'lesbleus', label: 'Les Bleus'},
+                            {id: 'kobiety', label: 'LFB Kobiety'},
+                            {id: 'sklep', label: 'Sklep'}
+                        ].map(t => (
+                            <button key={t.id} onClick={() => setTab(t.id)} className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${active === t.id ? 'bg-blue-900 text-white shadow-lg scale-105' : 'text-slate-500 hover:bg-slate-100'}`}>
+                                {t.label}
+                            </button>
+                        ))}
+                    </nav>
                 </div>
-              ))}
-            </div>
-          </div>
-        );
-
-        const PlayerSpotlight = () => (
-          <section className="bg-blue-900 py-24 text-white overflow-hidden relative">
-            <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16 relative z-10">
-              <div className="flex-1">
-                <span className="text-red-600 font-black uppercase tracking-[0.3em] text-sm">Player Spotlight</span>
-                <h2 className="text-8xl font-black italic uppercase leading-[0.85] mt-6 tracking-tighter">Victor <br/>Wembanyama</h2>
-                <div className="grid grid-cols-3 gap-8 mt-12 border-t border-white/10 pt-12">
-                  <div><p className="text-5xl font-black">3.6</p><p className="text-[10px] uppercase opacity-50 font-bold mt-2">Bloki/Mecz</p></div>
-                  <div><p className="text-5xl font-black">21.4</p><p className="text-[10px] uppercase opacity-50 font-bold mt-2">Punkty/Mecz</p></div>
-                  <div><p className="text-5xl font-black">10.6</p><p className="text-[10px] uppercase opacity-50 font-bold mt-2">Zbiórki</p></div>
-                </div>
-              </div>
-              <div className="flex-1 relative">
-                <div className="w-full h-[500px] bg-red-600 rounded-[3rem] rotate-3 absolute top-0 left-0 opacity-20 blur-2xl"></div>
-                <img src="https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800" className="rounded-[3rem] shadow-2xl relative z-10 rotate-1 hover:rotate-0 transition-transform duration-500" />
-              </div>
-            </div>
-          </section>
+            </header>
         );
 
         const App = () => {
-          const [activeTab, setActiveTab] = useState('news');
-          return (
-            <div className="min-h-screen">
-              <Header onNavigate={setActiveTab} activeTab={activeTab} />
-              <main>
-                {activeTab === 'news' && (
-                  <>
-                    <section className="bg-white py-32 text-center px-4">
-                      <h1 className="text-[10rem] font-black text-blue-900 italic uppercase leading-[0.75] tracking-tighter">LE BASKET <br/><span className="text-red-600">C'EST NOUS.</span></h1>
-                      <p className="mt-12 text-slate-400 font-bold uppercase tracking-[0.5em] text-sm">Official Hub of French Basketball Excellence</p>
-                    </section>
-                    <NewsSection />
-                    <PlayerSpotlight />
-                  </>
-                )}
-                {activeTab !== 'news' && (
-                  <div className="py-40 text-center">
-                    <h2 className="text-6xl font-black uppercase text-blue-900 italic tracking-tighter">Sekcja {activeTab}</h2>
-                    <div className="mt-10 max-w-2xl mx-auto p-20 border-8 border-blue-900/5 rounded-[4rem] text-slate-300 font-black text-3xl uppercase italic">
-                      Aktualizacja bazy danych LNB...
-                    </div>
-                  </div>
-                )}
-              </main>
-              <footer className="bg-slate-950 text-white py-16 px-4">
-                <div className="max-w-7xl mx-auto flex justify-between items-center opacity-50 text-[10px] font-bold uppercase tracking-[0.3em]">
-                  <span>BasketFrance Hub &copy; 2026</span>
-                  <span>France / USA / Euroleague</span>
+            const [tab, setTab] = useState('news');
+            const [view, setView] = useState('home'); // 'home' lub 'stars'
+
+            return (
+                <div className="min-h-screen">
+                    <Navigation active={tab} setTab={setTab} />
+
+                    {tab === 'news' && (
+                        <main>
+                            {view === 'home' ? (
+                                <>
+                                    {/* HERO SECTION */}
+                                    <section className="bg-white py-32 px-6 overflow-hidden">
+                                        <div className="max-w-7xl mx-auto text-center relative">
+                                            <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
+                                            <h1 className="hero-text text-[12vw] font-black text-blue-900 italic uppercase">
+                                                Le Basket <br/><span className="text-red-600">C'est Nous.</span>
+                                            </h1>
+                                            <p className="mt-12 text-slate-400 font-bold uppercase tracking-[0.6em] text-sm">Official Hub of French Basketball Excellence</p>
+                                            <button 
+                                                onClick={() => setView('stars')}
+                                                className="mt-16 bg-blue-900 text-white px-14 py-7 rounded-[2rem] font-black uppercase tracking-tighter hover:bg-red-600 hover:scale-105 transition-all shadow-[0_20px_50px_rgba(30,58,138,0.3)] text-xl"
+                                            >
+                                                Śledź gwiazdę NBA →
+                                            </button>
+                                        </div>
+                                    </section>
+
+                                    {/* NEWS GRID */}
+                                    <section className="max-w-7xl mx-auto px-6 py-24">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                            {NEWS.map((n, i) => (
+                                                <div key={i} className={`bg-white p-10 rounded-[3rem] shadow-sm hover:shadow-2xl transition-all border border-slate-100 group ${i === 0 ? 'md:col-span-2' : ''}`}>
+                                                    <span className="text-red-600 font-black text-xs uppercase tracking-widest">{n.cat}</span>
+                                                    <h3 className="text-3xl font-black mt-4 mb-6 leading-tight uppercase italic group-hover:text-blue-900">{n.title}</h3>
+                                                    <p className="text-slate-500 mb-8 leading-relaxed">{n.excerpt}</p>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-[10px] font-bold text-slate-300 uppercase">{n.date}</span>
+                                                        <button className="text-blue-900 font-black text-xs uppercase">Czytaj więcej</button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </section>
+                                </>
+                            ) : (
+                                /* STAR TRACKER SECTION */
+                                <section className="max-w-7xl mx-auto px-6 py-24 animate-in fade-in duration-500">
+                                    <button onClick={() => setView('home')} className="mb-12 flex items-center space-x-2 text-blue-900 font-black uppercase hover:translate-x-[-5px] transition-transform">
+                                        <span>← Wróć do strony głównej</span>
+                                    </button>
+                                    <h2 className="text-6xl font-black text-blue-900 uppercase italic mb-16 tracking-tighter">Profil <span className="text-red-600 text-7xl">Gwiaździsty</span></h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        {PLAYERS.map(p => (
+                                            <div key={p.id} className="bg-blue-900 rounded-[4rem] p-12 text-white shadow-2xl relative overflow-hidden group">
+                                                <div className="absolute top-0 right-0 w-64 h-64 bg-red-600 rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                                                <span className="bg-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">{p.role}</span>
+                                                <h3 className="text-5xl font-black uppercase italic mt-6 tracking-tighter">{p.name}</h3>
+                                                <p className="text-blue-300 font-bold uppercase mt-2">{p.team}</p>
+                                                <div className="my-10 h-[1px] bg-white/10"></div>
+                                                <p className="text-3xl font-black italic text-red-500 mb-6">{p.stats}</p>
+                                                <p className="text-blue-100/70 leading-relaxed text-lg">{p.desc}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            )}
+                        </main>
+                    )}
+
+                    {tab === 'sklep' && (
+                        <main className="max-w-7xl mx-auto px-6 py-32 text-center">
+                            <h2 className="text-7xl font-black text-blue-900 uppercase italic">Oficjalny <span className="text-red-600 tracking-tighter">Sklep</span></h2>
+                            <p className="mt-6 text-slate-500 font-bold uppercase tracking-widest">Najlepszy sprzęt prosto z Francji</p>
+                            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+                                {[
+                                    { name: "Koszulka Reprezentacji 24/25", price: "399 PLN", color: "Blue/Red" },
+                                    { name: "Wemby San Antonio Edition", price: "449 PLN", color: "Black/Silver" },
+                                    { name: "Piłka Spalding LNB Official", price: "249 PLN", color: "Orange" }
+                                ].map((item, i) => (
+                                    <div key={i} className="bg-white p-8 rounded-[3rem] shadow-lg border-b-8 border-blue-900">
+                                        <div className="h-64 bg-slate-100 rounded-[2rem] mb-6 flex items-center justify-center text-slate-300 font-black">PODGLĄD</div>
+                                        <h4 className="font-black uppercase italic text-xl">{item.name}</h4>
+                                        <p className="text-slate-400 text-sm font-bold uppercase">{item.color}</p>
+                                        <p className="mt-6 text-2xl font-black text-red-600">{item.price}</p>
+                                        <button className="mt-6 w-full bg-blue-900 text-white py-4 rounded-2xl font-black uppercase hover:bg-red-600 transition-colors">Dodaj do koszyka</button>
+                                    </div>
+                                ))}
+                            </div>
+                        </main>
+                    )}
+
+                    {['standings', 'prob', 'lesbleus', 'kobiety'].includes(tab) && (
+                        <main className="max-w-7xl mx-auto px-6 py-40 text-center">
+                            <h2 className="text-5xl font-black text-blue-900 uppercase italic">Sekcja {tab}</h2>
+                            <div className="mt-12 bg-white p-20 rounded-[4rem] shadow-inner border-4 border-dashed border-slate-200">
+                                <p className="text-2xl font-black text-slate-300 uppercase italic">Ładowanie oficjalnych tabel LNB / FFBB...</p>
+                            </div>
+                        </main>
+                    )}
+
+                    <footer className="bg-slate-900 text-white py-20 px-6 mt-20">
+                        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center border-t border-white/10 pt-10">
+                            <div className="text-xl font-black uppercase italic mb-8 md:mb-0">BasketFrance Hub <span className="text-red-600">© 2026</span></div>
+                            <div className="flex space-x-10 opacity-40 text-[10px] font-black uppercase tracking-[0.4em]">
+                                <span>LNB</span>
+                                <span>FFBB</span>
+                                <span>Euroleague</span>
+                                <span>NBA France</span>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
-              </footer>
-            </div>
-          );
+            );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
